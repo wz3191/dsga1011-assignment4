@@ -17,16 +17,10 @@ Wenshan Zhang \quad NetID: wz3191
 \textbf{Code:} \url{https://github.com/wz3191/dsga1011-assignment4}\\
 \textbf{Final model checkpoint:} \href{https://drive.google.com/drive/folders/1FjvmzQhq-PaMB6C09AFjqRof1zkbUR1v}{Google Drive: final checkpoint and tokenizer}
 
-\section{Q1. Fine-tuning BERT}
-The debug accuracy was 89.2\%. After full training, the original test accuracy was 93.072\%.
-
 \section{Q2a. Data transformation}
 I introduce keyboard typos into the reviews. I treat each sequence of English letters as a word. Each word with at least four letters has a 35\% chance of being modified. For each selected word, I randomly choose one letter and replace it with its left or right neighbor in the same QWERTY row. Both the letter position and its replacement are chosen uniformly. At the end of a row, only one neighbor is available. I preserve capitalization, spaces, punctuation, and the original label.
 
 This transformation is reasonable because users may press a nearby key when typing. Each selected word changes by only one letter, so readers can usually recognize the intended word. The overall sentiment should remain unchanged in most cases.
-
-\section{Q2b. Evaluation}
-The transformed test accuracy was 88.332\%. This is 4.740 percentage points below the original test accuracy.
 
 \section{Q3. Data augmentation}
 I sampled 5,000 distinct training examples with seed 42, applied the same typo transformation, and added them to the original 25,000 examples. The augmented training set contained 30,000 examples.
@@ -117,7 +111,7 @@ Full model: test & Pending & Pending & Pending & 60/432\\\bottomrule
 
 Record EM improved with the final beam setting, while SQL EM decreased slightly. Different SQL strings can return the same records. Also, beam search optimizes model sequence scores, not Record F1 directly.
 
-\textbf{Test status.} The final model generated 432 SQL queries in test-question order. Their saved execution results contain 60 execution errors and no timeouts. The test set has no public reference SQL. Gradescope leaderboard scores are not yet available and must replace the pending entries before the report is finalized. Execution error rate is not a substitute for test Record F1.
+Test scores are pending Gradescope evaluation.
 
 \newpage
 \subsection{Qualitative error analysis}
@@ -137,6 +131,4 @@ Execution timeout & Line 24 asks for flights and prices from LA to Charlotte. Th
 
 There are 319 other queries that execute without errors and return the exact reference record set. These category counts are diagnostic counts, not a replacement for the official metrics. In particular, the official evaluator can count an empty result from an execution error as an exact record match when the reference result is also empty.
 
-\section{Q7. Submission artifacts}
-The final prediction files are \texttt{t5\_ft\_experiment\_test.sql} and \texttt{t5\_ft\_experiment\_test.pkl}. Both contain 432 aligned entries. The model folder linked on page 1 contains the selected checkpoint, the original tokenizer, and the inference settings. No extra-credit model is submitted.
 \end{document}

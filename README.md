@@ -67,7 +67,7 @@ Final selection used development performance, not test-set tuning.
 - Model folder: https://drive.google.com/drive/folders/1FjvmzQhq-PaMB6C09AFjqRof1zkbUR1v
 - Submission folder: https://drive.google.com/drive/folders/1Wsxxl8B7FMnYuVj-FtMGUXg4cQI0S0vU
 
-Download all model folder files into one directory. The checkpoint uses standard Hugging Face shards; every tensor was verified identical to the original selected checkpoint. The unchanged generation config does not set beam search by default: pass the explicit inference arguments below.
+Download all model folder files into one directory. The checkpoint uses the original single `model.safetensors` file with `config.json` and `generation_config.json`. Load the original tokenizer from `google-t5/t5-small`. The unchanged generation config does not set beam search by default: pass the explicit inference arguments below.
 
 ```bash
 python final_test_generate.py generate --checkpoint /path/to/model \
