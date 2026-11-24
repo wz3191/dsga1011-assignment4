@@ -1,6 +1,6 @@
 # DS-GA 1011 Assignment 4
 
-Wenshan Zhang (wz3191). Work in progress: final test outputs and report links will be added.
+Wenshan Zhang (wz3191). Final configuration: learning rate 1e-4 and beam search with four beams. The report awaits the Gradescope test scores.
 
 Based on the course starter repository: https://github.com/gregdurrett/nyu-dsga1011-a4
 
@@ -10,7 +10,7 @@ Based on the course starter repository: https://github.com/gregdurrett/nyu-dsga1
 - `part2/`: T5 fine-tuning with the original tokenizer, evaluation, and experiment launchers.
 - `experiments/tokenizer_fix/`: the separate tokenizer-fix variant, including its decoding helper.
 
-The Part 2 main source is restored from the successful learning-rate run, not the tokenizer-fix variant. Model weights, datasets, generated outputs, and backup archives are not committed. Obtain course data and ground-truth records from the starter repository and place them in the corresponding part directories. Preserve the original data file ordering.
+The Part 2 main source is restored from the successful learning-rate run, not the tokenizer-fix variant. Model weights, datasets, and backup archives are not committed. The six required prediction files are in `submission/`. Obtain course data and ground-truth records from the starter repository and place them in the corresponding part directories. Preserve the original data file ordering.
 
 ## Environment
 
@@ -42,7 +42,7 @@ env -u SLURM_GET_USER_ENV -u SBATCH_GET_USER_ENV -u SBATCH_EXPORT -u SLURM_EXPOR
 
 `beam_eval.py generate` loads a saved checkpoint without training, uses the original T5 tokenizer, and generates development SQL. Use `--checkpoint` and `--output` to identify the model and avoid overwriting another experiment. `--beams 4` is the beam-search configuration; `--beams 1` is greedy. The maximum number of new tokens is 512 and the batch size is 8.
 
-`beam_eval.py score --sql PATH1 PATH2` scores development predictions using the course metrics in isolated worker processes. It requires `data/dev.sql`, the database, and `records/ground_truth_dev.pkl`. This script currently handles development evaluation only; final test inference remains to be finalized.
+`beam_eval.py score --sql PATH1 PATH2` scores development predictions using the course metrics in isolated worker processes. It requires `data/dev.sql`, the database, and `records/ground_truth_dev.pkl`. This script handles development evaluation. Use `final_test_generate.py generate` for test inference.
 
 ## Verified development results
 
@@ -55,11 +55,25 @@ Scores are percentages. All experiments use one random seed.
 | Original baseline, LR 5e-5, beam=4 | 38.41 | 53.22 | 62.55 |
 | Original tokenizer, LR 1e-4, greedy | 54.94 | 69.31 | 74.46 |
 
-The LR=1e-4 plus beam=4 evaluation is pending. Final selection will use development performance, not test-set tuning.
+| Final: original tokenizer, LR 1e-4, beam=4 | 54.72 | 70.17 | 75.66 |
 
-## Remaining submission materials
+Final selection used development performance, not test-set tuning.
 
-- Final configuration and its test SQL/record files.
-- Final report and error analysis for the selected configuration.
-- Google Drive link to the selected model checkpoint.
-- Repository access for course staff if this repository is private.
+## Final submission
+
+- `submission/`: all six required programming outputs, with original file names.
+- `report/writeup.tex` and `report/writeup.pdf`: write-up; replace pending test scores after Gradescope evaluation.
+- `analysis/`: saved development metrics and error categories/examples.
+- Model folder: https://drive.google.com/drive/folders/1FjvmzQhq-PaMB6C09AFjqRof1zkbUR1v
+- Submission folder: https://drive.google.com/drive/folders/1Wsxxl8B7FMnYuVj-FtMGUXg4cQI0S0vU
+
+Download all model folder files into one directory. The checkpoint uses standard Hugging Face shards; every tensor was verified identical to the original selected checkpoint. The unchanged generation config does not set beam search by default: pass the explicit inference arguments below.
+
+```bash
+python final_test_generate.py generate --checkpoint /path/to/model \
+  --beams 4 --batch_size 8 --max_new_tokens 512 \
+  --output results/t5_ft_experiment_test.sql
+python final_test_records.py
+```
+
+The final test files contain 432 aligned queries and record entries, with 60 execution errors and no timeouts. These counts are not test accuracy or F1. Submit to Gradescope, not Brightspace. Ensure course staff can access this private repository and the model folder.

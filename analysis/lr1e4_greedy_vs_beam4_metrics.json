@@ -1,0 +1,20 @@
+[
+  {
+    "sql_file": "results/beam_ablation/t5_ft_lr1e4_dev.sql",
+    "examples": 466,
+    "sql_em": 0.5493562231759657,
+    "record_em": 0.6931330472103004,
+    "record_f1": 0.7446145679148616,
+    "execution_errors": 58,
+    "timeouts": 0
+  },
+  {
+    "sql_file": "results/beam_ablation/t5_ft_lr1e4_beam4_dev.sql",
+    "examples": 466,
+    "sql_em": 0.5472103004291845,
+    "record_em": 0.7017167381974249,
+    "record_f1": 0.7566175785360315,
+    "execution_errors": 51,
+    "timeouts": 1
+  }
+]

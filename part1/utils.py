@@ -62,8 +62,8 @@ def custom_transform(example):
     def introduce_typo(match):
         word = match.group(0)
 
-        # Select words of at least four letters with probability 0.30.
-        if len(word) < 4 or random.random() >= 0.30:
+        # Select words of at least four letters with probability 0.35.
+        if len(word) < 4 or random.random() >= 0.35:
             return word
 
         # Replace one randomly selected letter with an adjacent key.
